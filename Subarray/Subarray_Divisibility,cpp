@@ -1,0 +1,60 @@
+/* Subarray Divisibility
+||
+|| Prefix Sums
+||
+|| Same logic as Subarray Sum equals K
+||
+|| Subarray-Sum(L....R) mod N  = 0 --> (Pref[R] - Pref[L-1]) mod N = 0
+|| --> Pref(R) mod N == Pref(L-1) mod N
+|| 
+|| So, if current remainder == some previous remainders, cnt += how many previous remainders
+||
+|| Time Complexity: O(Nlog N)
+|| Space Complexity: O(N)
+||
+*/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+long long subarrayDiv(vector<int> &arr, int divisor) {
+    int n = arr.size();
+    
+    long long cnt = 0;
+	long long sum = 0;
+	
+	// {Remainder : OccurrenceCount}
+	map<long long, int> modFreq;  
+	// Base Case: The empty Subarray-Sum, 0, is divisible by any divisor. Count subarrays starting at index 0
+	modFreq[0] = 1;
+	
+	for(int R = 0; R < n; R++) {
+		sum += arr[R];
+		// Ensuring Remainder is always positive
+		long long need = (sum % divisor + divisor) % divisor;
+		cnt += modFreq[need];
+		modFreq[need]++;
+	}
+	
+    return cnt;    
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int n;
+	cin >> n;
+
+	vector<int> arr(n);
+	for(int i = 0; i < n; i++) cin >> arr[i];
+	
+	long long cnt = subarrayDiv(arr, n);
+	cout << cnt << '\n';
+
+	return 0;
+}
+
+//Problem Links:
+//https://cses.fi/problemset/task/1662
