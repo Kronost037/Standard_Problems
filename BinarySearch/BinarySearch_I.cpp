@@ -1,4 +1,4 @@
-/* Binary Search in an Ascending Array (Strictly Increasing)
+/* Binary Search in an Ascending / Non-Decreasing Array (with Duplicates)
 ||
 || Two Pointers
 ||
@@ -14,6 +14,8 @@
 || We should look for Target in Subarray(l, mid - 1)
 ||
 || So, we basically discard half the array every iteration
+||
+|| Notes: Duplicate blocks do not make a difference. They are treated the same.
 ||
 || Time Complexity: O(log N)
 || Space Complexity: O(N) Input / O(1) Algo
@@ -33,7 +35,7 @@ int search(vector<int>& arr, int target) {
         
         if(arr[mid] < target) 
             l = mid + 1;
-        else if(arr[mid] > target)
+        else if(target < arr[mid])
             r = mid - 1;
         else // if (arr[mid] == target)
             return mid;
